@@ -4,10 +4,16 @@ require('luarocks.require')
 require('md5')
 require('Memcached')
 
-local memcache = Memcached.Connect()
+--config
+cache_host = '127.0.0.1'
+cache_port = 11211
+cache_timeout = 30
+
 cache_hits = 0
 cache_misses = 0
-cache_timeout = 30
+
+local memcache = Memcached.Connect(cache_host,cache_port)
+
 function is_query(packet)
     return packet:byte() == proxy.COM_QUERY
 end
