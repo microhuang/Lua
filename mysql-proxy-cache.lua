@@ -3,16 +3,18 @@
 require('luarocks.require')
 require('md5')
 require('Memcached')
+--require('redis')
 
 --config
 cache_host = '127.0.0.1'
-cache_port = 11211
+cache_port = 11211        --  6379
 cache_timeout = 30
 
 cache_hits = 0
 cache_misses = 0
 
 local memcache = Memcached.Connect(cache_host,cache_port)
+--local redis = Redis.connect(cache_host,cache_port)
 
 function is_query(packet)
     return packet:byte() == proxy.COM_QUERY
@@ -28,6 +30,7 @@ end
 
 function cache_get(query)
     local result = deserialize(memcache:get(to_hash(query)))
+    --local result = deserialize(redis:get(to_hash(query)))
     if result then
         print('HIT: '..to_hash(query)..' ('..query..')')
         cache_hits = cache_hits + 1
@@ -62,6 +65,7 @@ function cache_set(result_packet)
     end
 
     memcache:set(to_hash(query), serialize(resultset), cache_timeout)
+    --redis:set(to_hash(query), serialize(resultset), cache_timeout)
 end
 
 function serialize(o)
