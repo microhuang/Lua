@@ -22,6 +22,11 @@ echo "/usr/local/lib" > /etc/ld.so.conf.d/usr_local_lib.conf
 lddconf
 ```
 
+#rpm安装nginx可能需要添加--nodeps
+```
+rpm -Uvh /root/rpmbuild/RPMS/x86_64/nginx-1.6.2-1.el6.ngx.x86_64.rpm --nodeps
+```
+
 测试：
 ```
 location /lua {
