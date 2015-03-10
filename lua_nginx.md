@@ -38,3 +38,8 @@ location /lua {
 }
 curl http://127.0.0.1/lua
 ```
+
+UUID：
+```
+io.open('/proc/sys/kernel/random/uuid','r'):read(36)
+```
